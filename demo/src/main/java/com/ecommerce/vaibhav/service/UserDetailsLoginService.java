@@ -24,6 +24,14 @@ public class UserDetailsLoginService  {
 			details.get(0).setLogintime(new Date());
 			details.get(0).setMobiletype(userdetails.getMobiletype());
 			
+			details.get(0).setBrand(userdetails.getBrand());
+			details.get(0).setImeinumber(userdetails.getImeinumber());
+			details.get(0).setManifacturer(userdetails.getManifacturer());
+			details.get(0).setModelnumber(userdetails.getModelnumber());
+			details.get(0).setSdk(userdetails.getSdk());
+			details.get(0).setVersioncode(userdetails.getVersioncode());
+			
+			
 			loginusers.saveAll(details);
 		
 	
@@ -34,6 +42,13 @@ public class UserDetailsLoginService  {
 			userlogin.setIslogin(true);
 			userlogin.setLogintime(new Date());
 			userlogin.setMobiletype(userdetails.getMobiletype());
+
+			userlogin.setBrand(userdetails.getBrand());
+			userlogin.setImeinumber(userdetails.getImeinumber());
+			userlogin.setManifacturer(userdetails.getManifacturer());
+			userlogin.setModelnumber(userdetails.getModelnumber());
+			userlogin.setSdk(userdetails.getSdk());
+			userlogin.setVersioncode(userdetails.getVersioncode());
 			
 	loginusers.save(userlogin)	;	
 		}

@@ -1,4 +1,6 @@
 package com.ecommerce.vaibhav.controller;
+import java.net.http.HttpHeaders;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +12,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.vaibhav.config.JwtTokenUtil;
 import com.ecommerce.vaibhav.customresponce.LoginResponce;
+import com.ecommerce.vaibhav.model.LogoutResponce;
 import com.ecommerce.vaibhav.model.UserLoginDto;
+import com.ecommerce.vaibhav.model.UserLogoutDto;
 import com.ecommerce.vaibhav.service.JwtUserDetailsService;
 import com.ecommerce.vaibhav.service.UserDetailsLoginService;
+import com.ecommerce.vaibhav.service.UserLogoutService;
 @RestController
 @CrossOrigin()
 public class EmployeeController {
@@ -37,8 +43,15 @@ public class EmployeeController {
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
 	
+	@Autowired
+	private UserLogoutService userLogoutService;
+	
     @RequestMapping(value = "/greeting", method = RequestMethod.GET)
     public String getEmployees() {
+    
+    	
+    	
+    	
         return "Welcome!";
     }
     
@@ -73,6 +86,21 @@ public class EmployeeController {
 		
 		
 	
+    }
+    
+    @PostMapping(value = "/userlogout")
+    public   ResponseEntity<Object>  logoutUser(@RequestBody UserLogoutDto userdetails) {
+    	
+    String result	=	userLogoutService.changeloginstatus(userdetails);
+    	
+    	if(result=="succesfull") {
+    		
+    		LogoutResponce loutoutResponce=new LogoutResponce("succesfull", result);
+    		return  new ResponseEntity<Object>(loutoutResponce, HttpStatus.OK);
+    	}else {
+    		LogoutResponce loutoutResponce=new LogoutResponce("fail", "fail");
+    		return	new ResponseEntity<Object>(loutoutResponce, HttpStatus.OK);
+		}
     }
     
     private void authenticate(String username, String password) throws Exception {
