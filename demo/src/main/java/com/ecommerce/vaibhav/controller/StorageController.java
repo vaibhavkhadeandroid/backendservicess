@@ -1,5 +1,7 @@
 package com.ecommerce.vaibhav.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ecommerce.vaibhav.model.SlideImagesDao;
 import com.ecommerce.vaibhav.service.StorageService;
 
 @RestController
@@ -42,5 +45,9 @@ public class StorageController {
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
         return new ResponseEntity<>(service.deleteFile(fileName), HttpStatus.OK);
+    }
+    @GetMapping("/getslideimages")
+    public ResponseEntity<List<SlideImagesDao>> getSlideImages() {
+        return new ResponseEntity<>(service.getImageUrls(), HttpStatus.OK);
     }
 }

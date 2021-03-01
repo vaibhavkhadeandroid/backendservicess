@@ -3,9 +3,7 @@ package com.ecommerce.vaibhav.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +19,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-
+import com.ecommerce.vaibhav.model.SlideImagesDao;
+import com.ecommerce.vaibhav.model.SlideImagesDto;
+import com.ecommerce.vaibhav.repository.SlideImagesRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,6 +40,9 @@ public class StorageService {
 
     @Autowired
     private AmazonS3 s3Client;
+    
+    @Autowired
+    private SlideImagesRepository sliderepository;
 
     public String uploadFile(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);
@@ -50,8 +53,20 @@ public class StorageService {
         System.out.print("https://vaibhavbaket.s3.ap-south-1.amazonaws.com/"+fileName);	
       //  https://vaibhavbaket.s3.ap-south-1.amazonaws.com/1614359293720_20170114_093110.jpg
         
+        SlideImagesDao images=new SlideImagesDao();
+        images.setFileName(file.getOriginalFilename());
+        images.setFileUrl("https://vaibhavbaket.s3.ap-south-1.amazonaws.com/"+fileName);
+        
+        sliderepository.save(images);
         fileObj.delete();
         return "File uploaded : " + fileName;
+    }
+    
+    public List<SlideImagesDao> getImageUrls() {
+    	
+    	 List<SlideImagesDao> images = (List<SlideImagesDao>) sliderepository.findAll();
+    	 
+    	 return images;
     }
 
 
